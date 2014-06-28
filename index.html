@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"> 
+    <title>Ye Olde Whacke A Mole</title>
+    <style>
+      body {
+        background-image: url('chuck-e.jpg');
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        font-family: "Courier New", Courier, monospace;
+        cursor: url('mjolnir.png'), pointer;
+        text-align: center;
+      }
+
+      footer {
+        margin: 10px 0px;
+      }
+
+      h1 {
+        text-shadow:  0px 0px 5px #fff,
+                       0px 0px 10px #fff,
+                       0px 0px 15px #fff,
+                       0px 0px 20px #0decd8,
+                       0px 0px 35px #0decd8,
+                       0px 0px 40px #01bfc2,
+                       0px 0px 50px #01bfc2,
+                       0px 0px 75px #00adb0;
+        color: white;
+        font-size: 5em;
+        margin: 0px;
+      }
+
+      span {
+        display: inline-block;
+      }
+
+      #countdown {
+        background-color: #b244b9;
+        color: white;
+        padding: 10px 20px;
+      }
+
+      #start, #score {
+        background-color: #00eee4;
+        padding: 10px 20px;
+        text-decoration: none;
+      }
+
+      a#start:hover {
+        color: white;
+      }
+
+      a#start:visited {
+        color: inherit;
+      }
+
+      table {
+        border-collapse: collapse;
+        margin: 0px auto;
+        text-align: center;
+      }
+
+      td {
+        border: 2px solid #00C6CA;
+        width: 128px;
+        height: 128px;
+      }
+
+      #winner, #meh {
+        display: none;
+      }
+
+      .controls {
+        margin-bottom: 30px;
+        font-size: 1.3em;
+      }
+    
+      .game {
+        width: 420px;
+        margin: 0px auto;
+        background-color: #FFEFEF;
+        padding: 30px;
+      }
+
+      .mole {
+        display: none;
+      }
+    </style>  
+    <script src="jquery.min.js"></script>
+    <script type="text/javascript">
+      var ZERO = 0,
+          GAME_LENGTH = 60,
+          score = ZERO,
+          timer = GAME_LENGTH,
+          $moles, delay, gameId;
+      
+      $(document).ready(function() {
+        $moles = $('.mole');
+
+        $('#start').on('click', startGame);
+        
+        $moles.each(function(i, mole, list) {
+          $(mole).on('click', function() {
+            $('#score span').text(++score);
+          });
+        });
+
+        function resetGame() {
+          $('#middle').show();
+          $('#winner, #meh').hide();
+          score = ZERO;
+          timer = GAME_LENGTH;
+          $('#countdown span').text(':' + GAME_LENGTH);
+          $('#score span').text(0);
+        }
+
+        function startGame() {
+          resetGame();
+          
+          gameId = setInterval(function() {
+            var num = Math.floor((Math.random() * $moles.length));
+
+            getMole().slideToggle(650).slideToggle(700);
+          }, 700);
+
+          timerId = setInterval(function() {
+            timer--;
+            $('#countdown span').text(':' + timer);
+            if(0 === timer) {
+              stopGame();
+            }
+          }, 1000);
+        }
+
+        function stopGame() {
+          clearInterval(timerId);
+          clearInterval(gameId);
+          $('#middle').hide();
+          if(score > 10) {
+            $('#winner').show();
+          } else {
+            $('#meh').show();
+          }
+        }
+
+        function getMole() {
+          var num = Math.floor((Math.random() * $moles.length));
+
+          return $($moles[num]);
+        }
+    
+      });
+    </script> 
+  </head>
+  <body>
+    <div class="game">
+      <div class="controls">
+        <p>
+          <a href="javascript:;" id="start">Start</a>
+          Whack a mole
+        </p>
+
+        <br />
+        <span id="countdown">
+          Countdown:
+          <span>1:00</span>
+        </span>
+        <span id='score'>
+          Score:
+          <span>0</span>
+        </span>  
+      </div>
+      
+      <table>
+        <tr>
+          <td>
+            <img src="mole.png" alt="" class="mole">
+          </td>
+          <td>
+            <img src="mole.png" alt="" class="mole">
+          </td>
+          <td>
+            <img src="mole.png" alt="" class="mole">
+          </td>
+        </tr>
+        <tr id="winner">
+          <td colspan=3>
+            <h1>winner!</h1>
+          </td>
+        </tr>
+        <tr id="meh">
+          <td colspan=3>
+            <h1>wutever</h1>
+          </td>
+        </tr>
+        <tr id="middle">
+          <td>
+            <img src="mole.png" alt="" class="mole">
+          </td>
+          <td>
+            <img src="mole.png" alt="" class="mole">
+          </td>
+          <td>
+            <img src="mole.png" alt="" class="mole">
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="mole.png" alt="" class="mole">
+          </td>
+          <td>
+            <img src="mole.png" alt="" class="mole">
+          </td>
+          <td>
+            <img src="mole.png" alt="" class="mole">
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <footer>
+      Made in boredom by <a href="https://twitter.com/dianagliu">@dianagliu</a>
+    </footer>
+ </body> 
+</html>
